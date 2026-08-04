@@ -1,8 +1,14 @@
 package main
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+)
 
 func main() {
-	httpQ := &HTTPQ{}
-	http.ListenAndServe(":23411", httpQ.Handler())
+	httpQ := NewHTTPQ()
+	err := http.ListenAndServeTLS(":23411", "server.crt", "server.key", httpQ.Handler())
+	if err != nil {
+		log.Fatal(err)
+	}
 }
