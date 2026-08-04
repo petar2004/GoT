@@ -7,7 +7,7 @@ import (
 
 func main() {
 	httpQ := NewHTTPQ()
-	err := http.ListenAndServeTLS(":23411", "server.crt", "server.key", httpQ.Handler())
+	err := http.ListenAndServeTLS(":23411", "cert.pem", "key.pem", httpQ.Handler())
 	if err != nil {
 		log.Fatal(err)
 	}
