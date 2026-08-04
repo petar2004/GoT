@@ -12,7 +12,7 @@ import (
 func NewHTTPQ() *HTTPQ {
 	return &HTTPQ{
 		Topics:  make(map[string]*Topic),
-		Timeout: 5 * time.Second,
+		Timeout: 30 * time.Second,
 	}
 }
 
@@ -150,15 +150,14 @@ func (h *HTTPQ) Consume() http.Handler {
 
 			numberOfBytes, err := w.Write(producer.message)
 
-			producer.delivered <- struct{}{}
-
-			if err != nil {
-				return
-			}
-
 			h.mu.Lock()
 			h.RxBytes += numberOfBytes
 			h.mu.Unlock()
+
+			producer.delivered <- struct{}{}
+			if err != nil {
+				return
+			}
 
 			return
 		}
